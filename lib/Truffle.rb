@@ -1,14 +1,6 @@
 require 'Truffle/version'
+require 'Truffle/pattern_expander'
 require 'optparse'
-
-def files(directories, file_pattern)
-  directories.map do |directory|
-    files_to_index = File.join(directory, '**', file_pattern)
-    Dir.glob(files_to_index, File::FNM_DOTMATCH).reject do |file|
-      File.directory?(file)
-    end
-  end.flatten
-end
 
 options = {
     :file_pattern => '*'
@@ -28,9 +20,13 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-files(ARGV, options[:file_pattern]).each do |file|
-  # TODO index file
-  puts "Indexing file #{file}"
+PatternExpander.new(ARGV, options[:file_pattern]).expand.each do |file_name|
+  puts "Indexing file #{file_name}"
+  File.open(file_name, 'r') do |f|
+    f.each_line do |line|
+      puts "#{f.lineno}: #{line}"
+    end
+  end
 end
 
 while true
