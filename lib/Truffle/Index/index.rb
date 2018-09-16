@@ -1,3 +1,5 @@
+require 'Truffle/Index/search_result'
+
 class Index
 
   def initialize(tokenizer)
@@ -16,6 +18,13 @@ class Index
   end
 
   def search(value)
-    @reverse_index[value.downcase]
+    unless @reverse_index.has_key? value.downcase
+      return []
+    end
+    @reverse_index[value.downcase].group_by do |line|
+      line.file_name
+    end.each_pair.map do |file_name, lines|
+      SearchResult.new(file_name, lines)
+    end
   end
 end

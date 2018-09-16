@@ -9,5 +9,6 @@ RSpec.describe 'Index' do
     results = index.search('Hello')
     expect(results).not_to be_empty
     expect(results[0].file_name).to eq('toto.pdf')
+    expect(results[0].lines[0].text).to eq('Hello world!')
   end
 end
