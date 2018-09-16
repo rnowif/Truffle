@@ -1,5 +1,8 @@
 require 'Truffle/version'
 require 'Truffle/pattern_expander'
+require 'Truffle/Index/index'
+require 'Truffle/Index/line'
+require 'Truffle/Index/Tokenizer/standard_tokenizer'
 require 'optparse'
 
 options = {
@@ -20,11 +23,13 @@ OptionParser.new do |opts|
   end
 end.parse!
 
+index = Index.new(StandardTokenizer.new)
+
 PatternExpander.new(ARGV, options[:file_pattern]).expand.each do |file_name|
-  puts "Indexing file #{file_name}"
+  puts "Indexing file #{file_name}..."
   File.open(file_name, 'r') do |f|
     f.each_line do |line|
-      puts "#{f.lineno}: #{line}"
+      index.add(Line.new(file_name, f.lineno, line))
     end
   end
 end
@@ -33,6 +38,7 @@ while true
   print '> '
   search = STDIN.gets.chomp
 
-  # TODO compute search
   puts "Results for #{search}"
+  results = index.search(search)
+  puts results
 end
