@@ -2,26 +2,20 @@
 
 A simple full-text search engine to look into your local files.
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'Truffle'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install Truffle
-
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ ./exe/Truffle -h
+Truffle version 0.1.0
+Usage: Truffle [options] dir1 dir2...
+    -h, --help                       Display usage
+    -p, --pattern=PATTERN            File pattern (e.g. *.md)
 
+```
+
+`dir1`, `dir2`, etc. are directories you want to index.
+After indexing files, a prompt will invite you to type queries.
+ 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
